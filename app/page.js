@@ -23,8 +23,8 @@ export default function LoadingPage() {
             <Image
               src="/logo.png"
               alt="Al Markazul Athari"
-              width={180}
-              height={180}
+              width={130}
+              height={130}
               priority
             />
           </div>
