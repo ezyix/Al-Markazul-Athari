@@ -13,6 +13,93 @@
           background: #f4f6f3;
           font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
+           @media (max-width: 600px) {
+          .welcome-page {
+            padding: 20px;
+          }
+
+          .welcome-card {
+            min-height:20px;
+            padding: 30px;
+            border-radius: 27px;
+          }
+
+          .eyebrow {
+            margin-bottom: 25px;
+            font-size: 12px;
+            letter-spacing:1px;
+          }
+
+          .welcome-card h1 {
+            font-size: 22px;
+          }
+
+          .intro {
+            margin: 23px 0 42px;
+            font-size: 14px;
+          }
+
+          .desktop-break {
+            display: none;
+          }
+
+          .quiz-form label,
+          .quiz-form legend {
+            margin-bottom: 12px;
+            font-size: 14px;
+          }
+
+          .quiz-form input,
+          .gender-options {
+            height: 40px;
+            margin-bottom: 34px;
+            border-width: 2px;
+            padding: 0 20px;
+            font-size: 13px;
+            
+          }
+
+          .gender-option {
+            font-size: 15px;
+          }
+
+          .start-button {
+            height: 40px;
+            border-radius: 12px;
+            font-size: 16px;
+          }
+          .logo-wrapper {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 50px;
+          }
+
+          .logo {
+            width: 140px;
+            height: 70px;
+            margin-bottom: 10px;
+          }
+          .logo-text{
+            width: 140px;
+            height: 70px;
+          }          
+
+          h1 {
+            font-size: 20px;
+            letter-spacing: 1px;
+          }
+
+          p {
+            font-size: 14px;
+          }
+
+          .spinner {
+            width: 36px;
+            height: 36px;
+          }
+
+        }
+
 
         .loading-page {
           min-height: 100vh;
@@ -41,12 +128,16 @@
         }
 
         .logo {
-          width: 150px;
+          width: 100px;
           height: 70px;
           object-fit: contain;
-          margin-left: 30px;
           margin-bottom: 30px;
         }
+        .logo-text{
+          width: 100px;
+          height: 70px;
+          object-fit: contain;
+        }        
 
         h1 {
           margin: 0 0 20px;
@@ -67,6 +158,11 @@
           justify-content: center;
           padding: 44px;
           background: radial-gradient(circle at 50% 0%, #ffffff 0, #f5f7f4 58%, #edf1ed 100%);
+        }
+        .welcome-logo{
+          display: flex;
+          margin: 0px;
+          position: relative;
         }
 
         .welcome-card {
@@ -234,96 +330,4 @@
           }
         }
 
-        @media (max-width: 600px) {
-          .welcome-page {
-            padding: 20px;
-          }
-
-          .welcome-card {
-            min-height:20px;
-            padding: 30px;
-            border-radius: 27px;
-          }
-
-          .eyebrow {
-            margin-bottom: 25px;
-            font-size: 12px;
-            letter-spacing:1px;
-          }
-
-          .welcome-card h1 {
-            font-size: 22px;
-          }
-
-          .intro {
-            margin: 23px 0 42px;
-            font-size: 14px;
-          }
-
-          .desktop-break {
-            display: none;
-          }
-
-          .quiz-form label,
-          .quiz-form legend {
-            margin-bottom: 12px;
-            font-size: 14px;
-          }
-
-          .quiz-form input,
-          .gender-options {
-            height: 40px;
-            margin-bottom: 34px;
-            border-width: 2px;
-            padding: 0 20px;
-            font-size: 13px;
-            
-          }
-
-          .gender-option {
-            font-size: 15px;
-          }
-
-          .start-button {
-            height: 40px;
-            border-radius: 12px;
-            font-size: 16px;
-          }
-
-          .accent-dot-top {
-            top: 20px;
-            right: 25px;
-          }
-
-          .accent-dot-middle {
-            top: 438px;
-            right: 45px;
-          }
-
-          .logo-wrapper {
-            width: 150px;
-            height: 150px;
-            margin-bottom: 30px;
-          }
-
-          .logo {
-            width: 130px;
-            height: 70px;
-            margin-bottom: 10px;
-          }
-
-          h1 {
-            font-size: 20px;
-            letter-spacing: 1px;
-          }
-
-          p {
-            font-size: 14px;
-          }
-
-          .spinner {
-            width: 36px;
-            height: 36px;
-          }
-
-        }
+     

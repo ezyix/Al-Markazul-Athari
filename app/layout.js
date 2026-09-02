@@ -1,5 +1,7 @@
+import "./globals.css";
+
 export const metadata = {
-  title: "quiz",
+  title: "Al-Markazul-Athari-QUIZ",
 };
 
 export default function RootLayout({ children }) {

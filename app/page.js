@@ -10,7 +10,7 @@ export default function LoadingPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -38,14 +38,27 @@ export default function LoadingPage() {
 
   return (
     <main className="welcome-page">
+
+      <div className="welcome-logo">
         <Image
-          src="/brand name.png"
+          src="/logo transparent-bg.png"
           alt="Al Markazul Athari"
           width={180}
           height={180}
           priority
           className="logo"
         />
+
+        <Image
+          src="/brand name.png"
+          alt="Al Markazul Athari"
+          width={180}
+          height={180}
+          priority
+          className="logo-text"
+        />
+
+      </div>
     
       <section className="welcome-card" aria-labelledby="welcome-title">
         <p className="eyebrow">WELCOME</p>
