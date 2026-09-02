@@ -21,7 +21,7 @@ export default function LoadingPage() {
         <div className="loading-content">
           <div className="logo-wrapper">
             <Image
-              src="/logo white-bg.png"
+              src="/logo.png"
               alt="Al Markazul Athari"
               width={180}
               height={180}
@@ -38,27 +38,14 @@ export default function LoadingPage() {
 
   return (
     <main className="welcome-page">
-
-      <div className="welcome-logo">
-        <Image
-          src="/logo transparent-bg.png"
-          alt="Al Markazul Athari"
-          width={180}
-          height={180}
-          priority
-          className="logo"
-        />
-
         <Image
           src="/brand name.png"
           alt="Al Markazul Athari"
           width={180}
           height={180}
           priority
-          className="logo-text"
+          className="logo"
         />
-
-      </div>
     
       <section className="welcome-card" aria-labelledby="welcome-title">
         <p className="eyebrow">WELCOME</p>
