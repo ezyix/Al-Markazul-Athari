@@ -21,7 +21,7 @@ export default function LoadingPage() {
         <div className="loading-content">
           <div className="logo-wrapper">
             <Image
-              src="/logo.png"
+              src="/logo white-bg.png"
               alt="Al Markazul Athari"
               width={180}
               height={180}
