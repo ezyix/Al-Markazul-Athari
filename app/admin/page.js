@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import "./admin.css";
-
-const ADMIN_EMAIL = "admin@markazul.athari.com";
-const ADMIN_PASSWORD = "10044";
+import {
+  clearAdminSession,
+  getAdminSession,
+} from "./session";
+import Image from "next/image";
 
 const emptySummary = {
 	total: 0,
@@ -37,19 +40,46 @@ function formatDate(date) {
 	}).format(new Date(date));
 }
 
+function getTimeTaken(startedAt, completedAt) {
+	if (!startedAt) {
+		return "--";
+	}
+
+	const start = new Date(startedAt).getTime();
+	const end = completedAt ? new Date(completedAt).getTime() : Date.now();
+	const duration = Math.max(0, end - start);
+
+	if (completedAt) {
+		return formatDuration(duration);
+	}
+
+	return "In progress";
+}
+
 export default function AdminPage() {
+	const router = useRouter();
 	const [authenticated, setAuthenticated] = useState(false);
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [loginError, setLoginError] = useState("");
 	const [participants, setParticipants] = useState([]);
 	const [summary, setSummary] = useState(emptySummary);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [activeView, setActiveView] = useState("leaderboard");
 
-	const loadParticipants = async () => {
-		setLoading(true);
+	useEffect(() => {
+		const session = getAdminSession();
+
+		if (!session) {
+			router.replace("/admin/login");
+			return;
+		}
+
+		setAuthenticated(true);
+	}, [router]);
+
+	const loadParticipants = async ({ silent = false } = {}) => {
+		if (!silent) {
+			setLoading(true);
+		}
 		setError("");
 
 		try {
@@ -67,7 +97,9 @@ export default function AdminPage() {
 		} catch (requestError) {
 			setError(requestError.message || "Failed to load participants.");
 		} finally {
-			setLoading(false);
+			if (!silent) {
+				setLoading(false);
+			}
 		}
 	};
 
@@ -76,33 +108,21 @@ export default function AdminPage() {
 			return;
 		}
 
-		loadParticipants();
+		loadParticipants({ silent: true });
 
 		const refreshInterval = setInterval(() => {
-			loadParticipants();
+			loadParticipants({ silent: true });
 		}, 10000);
 
 		return () => clearInterval(refreshInterval);
 	}, [authenticated]);
 
-	const handleLogin = (event) => {
-		event.preventDefault();
-
-		if (email.trim().toLowerCase() !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
-			setLoginError("Incorrect email or password.");
-			return;
-		}
-
-		setLoginError("");
-		setAuthenticated(true);
-	};
-
 	const handleSignOut = () => {
+		clearAdminSession();
 		setAuthenticated(false);
-		setEmail("");
-		setPassword("");
 		setParticipants([]);
 		setSummary(emptySummary);
+		router.replace("/admin/login");
 	};
 
 	const exportCsv = () => {
@@ -141,24 +161,7 @@ export default function AdminPage() {
 	};
 
 	if (!authenticated) {
-		return (
-			<main className="admin-login-page">
-                <div className="admin-mark"><img src="./brand name.png" alt="AL MARKAZUL ATHARI" width="120" height="40" /></div>
-
-				<section className="admin-login-card">
-					<h1>Admin sign in</h1>
-					<p className="admin-login-copy">Access the live quiz dashboard.</p>
-					<form onSubmit={handleLogin} className="admin-login-form">
-						<label htmlFor="admin-email">Email address</label>
-						<input id="admin-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="username" required />
-						<label htmlFor="admin-password">Password</label>
-						<input id="admin-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required />
-						{loginError && <p className="admin-form-error">{loginError}</p>}
-						<button type="submit" className="admin-primary-button">Sign in</button>
-					</form>
-				</section>
-			</main>
-		);
+		return null;
 	}
 
 	const stats = [
@@ -173,7 +176,9 @@ export default function AdminPage() {
 	return (
 		<main className="admin-page">
 			<header className="admin-header">
-				<div className="admin-brand"><span className="admin-brand-mark">AM</span><span>Al Markazul Athari</span></div>
+                <div>
+				<Image src="/logo.png" alt="logo" width="40" height="40" /><Image src="/brand name.png" alt="Al Markazul Athari" width="80" height="25" />
+                </div>
 				<button className="admin-signout" onClick={handleSignOut}>Sign out</button>
 			</header>
 
@@ -193,7 +198,7 @@ export default function AdminPage() {
 					{error && <p className="admin-data-error">{error}</p>}
 					<section className="admin-stats">{stats.map(([label, value]) => <article className="stat-card" key={label}><span>{label}</span><strong>{value}</strong></article>)}</section>
 					<section className="participants-panel"><div className="panel-heading"><div><p className="admin-kicker">LIVE RESULTS</p><h2>Participant leaderboard</h2></div><span>{participants.length} records</span></div>
-						<div className="table-wrap"><table><thead><tr><th>Name</th><th>Gender</th><th>Age</th><th>Status</th><th>Score</th><th>Started</th></tr></thead><tbody>{participants.map((participant) => <tr key={participant._id || participant.participantId}><td><strong>{participant.fullName}</strong><small>{participant.participantId}</small></td><td>{participant.gender}</td><td>{participant.age}</td><td><span className={`status-badge ${participant.status}`}>{participant.status === "completed" ? "Completed" : "In progress"}</span></td><td>{participant.status === "completed" ? `${participant.score}/${participant.totalQuestions}` : "--"}</td><td>{formatDate(participant.startedAt)}</td></tr>)}{!participants.length && <tr><td colSpan="6" className="empty-state">{loading ? "Loading participants..." : "No participants registered yet."}</td></tr>}</tbody></table></div>
+						<div className="table-wrap"><table><thead><tr><th>Name</th><th>Gender</th><th>Age</th><th>Status</th><th>Score</th><th>Time Taken</th><th>Started</th></tr></thead><tbody>{participants.map((participant) => <tr key={participant._id || participant.participantId}><td><strong>{participant.fullName}</strong></td><td>{participant.gender}</td><td>{participant.age}</td><td><span className={`status-badge ${participant.status}`}>{participant.status === "completed" ? "Completed" : "In progress"}</span></td><td>{participant.status === "completed" ? `${participant.score}/${participant.totalQuestions}` : "--"}</td><td>{getTimeTaken(participant.startedAt, participant.completedAt)}</td><td>{formatDate(participant.startedAt)}</td></tr>)}{!participants.length && <tr><td colSpan="7" className="empty-state">{loading ? "Loading participants..." : "No participants registered yet."}</td></tr>}</tbody></table></div>
 					</section>
 				</>
 			) : <section className="placeholder-panel"><p className="admin-kicker">QUESTIONS</p><h2>Question management</h2><p>Question management can be added here when the quiz editor is ready.</p></section>}
