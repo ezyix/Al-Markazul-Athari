@@ -144,9 +144,14 @@ export default function LoadingPage() {
 
   return (
     <main className="quiz-page welcome-page">
-      <div>
-        <Image src="/logo.png" alt="logo" width="38" height="40" /><Image src="/brand name.png" alt="Al Markazul Athari" width="80" height="25" />
-       </div>      
+      <Image
+        src="/brand name.png"
+        alt="Al Markazul Athari"
+        width={180}
+        height={180}
+        priority
+        className="logo"
+      />     
 
 
       <section
