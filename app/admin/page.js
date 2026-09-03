@@ -112,7 +112,7 @@ export default function AdminPage() {
 
 		const refreshInterval = setInterval(() => {
 			loadParticipants({ silent: true });
-		}, 10000);
+		}, 2000);
 
 		return () => clearInterval(refreshInterval);
 	}, [authenticated]);
