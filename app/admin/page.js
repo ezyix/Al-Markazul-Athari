@@ -72,9 +72,17 @@ export default function AdminPage() {
 	};
 
 	useEffect(() => {
-		if (authenticated) {
-			loadParticipants();
+		if (!authenticated) {
+			return;
 		}
+
+		loadParticipants();
+
+		const refreshInterval = setInterval(() => {
+			loadParticipants();
+		}, 10000);
+
+		return () => clearInterval(refreshInterval);
 	}, [authenticated]);
 
 	const handleLogin = (event) => {
@@ -181,7 +189,7 @@ export default function AdminPage() {
 
 			{activeView === "leaderboard" ? (
 				<>
-					<div className="admin-actions"><button onClick={loadParticipants} disabled={loading}>↻ Refresh</button><button onClick={exportCsv} disabled={!participants.length}>⇩ Export CSV</button></div>
+					<div className="admin-actions"><button onClick={loadParticipants} disabled={loading}>↻ Refresh</button></div>
 					{error && <p className="admin-data-error">{error}</p>}
 					<section className="admin-stats">{stats.map(([label, value]) => <article className="stat-card" key={label}><span>{label}</span><strong>{value}</strong></article>)}</section>
 					<section className="participants-panel"><div className="panel-heading"><div><p className="admin-kicker">LIVE RESULTS</p><h2>Participant leaderboard</h2></div><span>{participants.length} records</span></div>
