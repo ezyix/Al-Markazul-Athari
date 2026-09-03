@@ -539,9 +539,9 @@ function QuizPageContent() {
       <header className="quiz-header">
 
         <div className="quiz-brand">
-          <h1>
-            AL MARKAZUL ATHARI
-          </h1>
+        <div>
+                <Image src="/logo.png" alt="logo" width="38" height="40" /><Image src="/brand name.png" alt="Al Markazul Athari" width="80" height="25" />
+        </div>
 
           {participant && (
             <p>
