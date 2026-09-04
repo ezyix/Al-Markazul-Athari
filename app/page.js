@@ -167,14 +167,14 @@ export default function LoadingPage() {
 
   if (!quizStarted) {
     return (
-      <main className="quiz-page welcome-page">
+      <main className="quiz-page welcome-page not-started-page">
         <div>
           <Image src="/logo.png" alt="logo" width="38" height="40" />
           <Image src="/brand name.png" alt="Al Markazul Athari" width="80" height="25" />
         </div>
 
-        <section className="question-card welcome-card" aria-labelledby="quiz-status-title">
-            <div class="donation-upi-row1">
+        <section className="question-card welcome-card not-started-card" aria-labelledby="quiz-status-title">
+          <div className="donation-upi-row1">
         <p className="textt">
         السلام عليكم ورحمه الله وبركاته
         </p>

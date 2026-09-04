@@ -80,6 +80,11 @@
           box-shadow: 0 14px 38px rgba(27, 48, 38, 0.08);
         }
 
+        .not-started-card {
+          height: 250px;
+          min-height: 250px;
+        }
+
         .eyebrow {
           margin: 0 0 22px;
           color: #12025c;
@@ -243,6 +248,11 @@
             min-height:20px;
             padding: 30px;
             border-radius: 27px;
+          }
+
+          .not-started-card {
+            height: 250px;
+            min-height: 250px;
           }
 
           .eyebrow {
@@ -1728,3 +1738,17 @@
   font-size: 15px;
   font-family: "Segoe UI", Tahoma, Arial, sans-serif;
 }
+
+.not-started-page {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: flex-start;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.not-started-page .not-started-card {
+  margin: 0;
+}
+
