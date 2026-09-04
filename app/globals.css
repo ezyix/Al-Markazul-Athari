@@ -1692,137 +1692,39 @@
 
 }
 
-.not-started-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 18px;
-  padding-top: 28px;
-  background: #edf4f8;
-}
-
-.not-started-brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.not-started-brand-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  line-height: 1.1;
-}
-
-.not-started-brand-ar,
-.not-started-brand-en {
-  display: block;
-  font-weight: 800;
-  color: #1e3a5f;
-}
-
-.not-started-brand-ar {
-  font-size: 14px;
-  font-family: "Noto Naskh Arabic", "Segoe UI", serif;
-  direction: rtl;
-}
-
-.not-started-brand-en {
-  font-size: 13px;
-  letter-spacing: 0.2px;
-  text-transform: uppercase;
-}
-
-.not-started-card {
-  width: min(100%, 760px);
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid #dfeaf5;
-  border-radius: 26px 26px 26px 26px;
-  box-shadow: 0 10px 30px rgba(57, 127, 207, 0.08);
-  padding: 8px;
-  position: relative;
-  border-top: 6px solid #7db7eb;
-}
-
-.not-started-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 26px;
-  border: 1px solid rgba(125, 183, 235, 0.75);
-  pointer-events: none;
-}
-
-.not-started-inner {
-  background: rgba(244, 246, 248, 0.12);
-  border-radius: 20px;
-  padding: 18px 18px 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.not-started-ar,
-.not-started-sign {
-  margin: 0;
-  color: #1e7bc2;
-  font-weight: 700;
-  font-size: 17px;
-  direction: rtl;
-  font-family: "Noto Naskh Arabic", "Segoe UI", serif;
-}
-
-.not-started-en {
-  margin: 12px 0 10px;
-  color: #1f5d8d;
-  font-size: clamp(17px, 2vw, 24px);
-  line-height: 1.5;
-  font-weight: 600;
-  text-align: center;
-  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-}
-
-.not-started-sign {
-  margin-top: 6px;
-}
-
-@media (max-width: 600px) {
-  .not-started-page {
+.donation-upi-row1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
-    padding-top: 12px;
-  }
-
-  .not-started-brand {
-    gap: 8px;
-    transform: scale(0.92);
-    transform-origin: center top;
-  }
-
-  .not-started-card {
-    width: min(100%, 420px);
+    padding: 26px 22px 20px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid #dfeaf7;
     border-radius: 18px;
-    padding: 5px;
-    border-top-width: 5px;
-  }
+    box-shadow: 0 12px 32px rgba(57, 127, 207, 0.08);
+    margin-top: 12px;
+    max-width: 520px;
+    width: min(100%, 520px);
+    margin-inline: auto;
+}
 
-  .not-started-inner {
-    padding: 14px 14px 12px;
-  }
+.textt {
+  margin: 0;
+  color: #2568aa;
+  line-height: 1.7;
+  text-align: center;
+  direction: rtl;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+}
 
-  .not-started-ar,
-  .not-started-sign {
-    font-size: 14px;
-  }
-
-  .not-started-en {
-    font-size: 15px;
-    line-height: 1.6;
-  }
+.texttp {
+  color: #3f536b;
+  line-height: 1.7;
+  margin: 0;
+  text-align: center;
+  font-size: 15px;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
 }
