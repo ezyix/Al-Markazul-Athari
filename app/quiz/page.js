@@ -15,58 +15,58 @@ import "../globals.css";
 const QUESTIONS = [
   {
     id: 1,
-    question: "What is the capital city of India?",
+    question: "How many verses are in the Quran?",
     options: [
-      "Mumbai",
-      "New Delhi",
-      "Kolkata",
-      "Chennai",
+      "114",
+      "120",
+      "100",
+      "130",
     ],
-    answer: "New Delhi",
+    answer: "114",
   },
   {
     id: 2,
-    question: "Which planet is known as the Red Planet?",
+    question: "which surah has the most verses?",
     options: [
-      "Earth",
-      "Venus",
-      "Mars",
-      "Jupiter",
+      "Surah Al-Baqarah",
+      "Surah Al-Imran",
+      "Surah An-Nisa",
+      "Surah Al-Ma'idah",
     ],
-    answer: "Mars",
+    answer: "Surah Al-Baqarah",
   },
   {
     id: 3,
-    question: "What does HTML stand for?",
+    question: "Who is last and final prophet?",
     options: [
-      "Hyper Text Markup Language",
-      "High Text Machine Language",
-      "Hyperlinks Text Mark Language",
-      "Home Tool Markup Language",
+      "Prophet Muhammad (PBUH)",
+      "Prophet Sulayman (PBUH)",
+      "Prophet Musa (PBUH)",
+      "Prophet Ibrahim (PBUH)",
     ],
-    answer: "Hyper Text Markup Language",
+    answer: "Prophet Muhammad (PBUH)",
   },
   {
     id: 4,
-    question: "Which language is primarily used to style web pages?",
+    question: "Which Prophet was given the ability to understand the language of birds?",
     options: [
-      "JavaScript",
-      "Python",
-      "CSS",
-      "MongoDB",
+      "Prophet Muhammad (PBUH)",
+      "Prophet Sulayman (PBUH)",
+      "Prophet Musa (PBUH)",
+      "Prophet Ibrahim (PBUH)",
     ],
-    answer: "CSS",
+    answer: "Prophet Sulayman (PBUH)",
   },
   {
     id: 5,
-    question: "Which database are you using for this quiz application?",
+    question: "The phrase وَمَن يَغْفِرُ الذُّنُوبَ إِلَّا اللَّهُ (“And who can forgive sins except Allah?”) is in:",
     options: [
-      "MySQL",
-      "MongoDB",
-      "PostgreSQL",
-      "SQLite",
+      "Surah Al-Imran, Ayah 135",
+      "Surah An-Nisa, Ayah 135",
+      "Surah Al-Baqarah, Ayah 135",
+      "Surah Al-furqan, Ayah 135",
     ],
-    answer: "MongoDB",
+    answer: "Surah Al-Imran, Ayah 135",
   },
 ];
 
@@ -132,6 +132,11 @@ function QuizPageContent() {
         if (
           parsed.participantId === participantId
         ) {
+          if (parsed.status === "completed") {
+            router.replace("/");
+            return;
+          }
+
           setParticipant(parsed);
         }
       } catch (error) {
@@ -205,6 +210,28 @@ function QuizPageContent() {
       );
     };
   }, [participant, completed, submitting, router]);
+
+  useEffect(() => {
+    if (!completed) {
+      return;
+    }
+
+    const handleCompletedQuizBack = () => {
+      router.replace("/");
+    };
+
+    window.addEventListener(
+      "popstate",
+      handleCompletedQuizBack
+    );
+
+    return () => {
+      window.removeEventListener(
+        "popstate",
+        handleCompletedQuizBack
+      );
+    };
+  }, [completed, router]);
 
   // ==========================================
   // Countdown timer

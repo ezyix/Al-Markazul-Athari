@@ -42,13 +42,19 @@ export async function GET() {
       summary: {
         total: participants.length,
         male: participants.filter(
-          (participant) => participant.gender === "Male"
+          (participant) => participant.gender === "Male" && participant.age >= 13
         ).length,
         female: participants.filter(
-          (participant) => participant.gender === "Female"
+          (participant) => participant.gender === "Female" && participant.age >= 13
         ).length,
         kids: participants.filter(
           (participant) => participant.age < 13
+        ).length,
+        kidsMale: participants.filter(
+          (participant) => participant.age < 13 && participant.gender === "Male"
+        ).length,
+        kidsFemale: participants.filter(
+          (participant) => participant.age < 13 && participant.gender === "Female"
         ).length,
         inProgress: participants.filter(
           (participant) => participant.status === "attending"
