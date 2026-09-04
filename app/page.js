@@ -19,10 +19,13 @@ export default function LoadingPage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [quizStarted, setQuizStarted] = useState(false);
 
   // Loading screen
   useEffect(() => {
     const timer = setTimeout(() => {
+      const started = localStorage.getItem("al-markazul-quiz-status") === "true";
+      setQuizStarted(started);
       setLoading(false);
     }, 5000);
 
@@ -134,6 +137,32 @@ export default function LoadingPage() {
 
           <div className="quiz-loader spinner" />
         </div>
+      </main>
+    );
+  }
+
+  if (!quizStarted) {
+    return (
+      <main className="quiz-page welcome-page">
+        <div>
+          <Image src="/logo.png" alt="logo" width="38" height="40" />
+          <Image src="/brand name.png" alt="Al Markazul Athari" width="80" height="25" />
+        </div>
+
+        <section className="question-card welcome-card" aria-labelledby="quiz-status-title">
+            <div class="donation-upi-row1">
+        <p className="textt">
+        السلام عليكم ورحمه الله وبركاته
+        </p>
+        <p className="texttp">
+          The quiz is not started yet.<br/> Please wait for the quiz to start.<br />
+        </p>
+        <p className="textt">
+            بارك الله فيك
+        </p>
+        </div>
+
+        </section>
       </main>
     );
   }

@@ -9,6 +9,8 @@ import {
 } from "./session";
 import Image from "next/image";
 
+const QUIZ_STATUS_KEY = "al-markazul-quiz-status";
+
 const emptySummary = {
 	total: 0,
 	male: 0,
@@ -18,6 +20,44 @@ const emptySummary = {
 	completed: 0,
 	fastestFinish: null,
 };
+
+const QUIZ_QUESTIONS = [
+	{
+		id: 1,
+		question: "What is the capital city of India?",
+		options: ["Mumbai", "New Delhi", "Kolkata", "Chennai"],
+		answer: "New Delhi",
+	},
+	{
+		id: 2,
+		question: "Which planet is known as the Red Planet?",
+		options: ["Earth", "Venus", "Mars", "Jupiter"],
+		answer: "Mars",
+	},
+	{
+		id: 3,
+		question: "What does HTML stand for?",
+		options: [
+			"Hyper Text Markup Language",
+			"High Text Machine Language",
+			"Hyperlinks Text Mark Language",
+			"Home Tool Markup Language",
+		],
+		answer: "Hyper Text Markup Language",
+	},
+	{
+		id: 4,
+		question: "Which language is primarily used to style web pages?",
+		options: ["JavaScript", "Python", "CSS", "MongoDB"],
+		answer: "CSS",
+	},
+	{
+		id: 5,
+		question: "Which database are you using for this quiz application?",
+		options: ["MySQL", "MongoDB", "PostgreSQL", "SQLite"],
+		answer: "MongoDB",
+	},
+];
 
 function formatDuration(duration) {
 	if (duration === null || duration === undefined) {
@@ -64,6 +104,7 @@ export default function AdminPage() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [activeView, setActiveView] = useState("leaderboard");
+	const [quizStarted, setQuizStarted] = useState(false);
 
 	useEffect(() => {
 		const session = getAdminSession();
@@ -73,6 +114,8 @@ export default function AdminPage() {
 			return;
 		}
 
+		const started = localStorage.getItem(QUIZ_STATUS_KEY) === "true";
+		setQuizStarted(started);
 		setAuthenticated(true);
 	}, [router]);
 
@@ -104,7 +147,7 @@ export default function AdminPage() {
 	};
 
 	useEffect(() => {
-		if (!authenticated) {
+		if (!authenticated || !quizStarted) {
 			return;
 		}
 
@@ -112,13 +155,20 @@ export default function AdminPage() {
 
 		const refreshInterval = setInterval(() => {
 			loadParticipants({ silent: true });
-		}, 2000);
+		}, 10000);
 
 		return () => clearInterval(refreshInterval);
-	}, [authenticated]);
+	}, [authenticated, quizStarted]);
+
+	const handleStartQuiz = () => {
+		const nextValue = !quizStarted;
+		localStorage.setItem(QUIZ_STATUS_KEY, String(nextValue));
+		setQuizStarted(nextValue);
+	};
 
 	const handleSignOut = () => {
 		clearAdminSession();
+		localStorage.removeItem(QUIZ_STATUS_KEY);
 		setAuthenticated(false);
 		setParticipants([]);
 		setSummary(emptySummary);
@@ -188,8 +238,18 @@ export default function AdminPage() {
 			</nav>
 
 			<section className="admin-live-banner">
-				<div className="live-copy"><span className="live-dot" /><div><strong>Quiz is LIVE</strong><span>Attendees can register and take the quiz now.</span></div></div>
-				<div className="live-actions"><span className="started-pill">Started</span><button className="end-quiz-button" type="button">End quiz</button></div>
+				<div className="live-copy"><span className="live-dot" /><div><strong>{quizStarted ? "Quiz is LIVE" : "Quiz not started"}</strong><span>{quizStarted ? "Attendees can register and take the quiz now." : "Press Start to open the quiz for participants."}</span></div></div>
+				<div className="live-actions">
+					<button className="started-pill" type="button" onClick={handleStartQuiz}>
+						{quizStarted ? "Started" : "Start"}
+					</button>
+					<button className="end-quiz-button" type="button" onClick={() => {
+						localStorage.setItem(QUIZ_STATUS_KEY, "false");
+						setQuizStarted(false);
+					}}>
+						End quiz
+					</button>
+				</div>
 			</section>
 
 			{activeView === "leaderboard" ? (
@@ -201,7 +261,41 @@ export default function AdminPage() {
                         <div className="table-wrap"><table><thead><tr><th>Name</th><th>Gender</th><th>Age</th><th>Status</th><th>Score</th><th>Time Taken</th><th>Started</th></tr></thead><tbody>{participants.map((participant) => <tr key={participant._id || participant.participantId}><td><strong>{participant.fullName}</strong><small>{participant.participantId}</small></td><td>{participant.gender}</td><td>{participant.age}</td><td><span className={`status-badge ${participant.status}`}>{participant.status === "completed" ? "Completed" : "In progress"}</span></td><td>{participant.status === "completed" ? `${participant.score}/${participant.totalQuestions}` : "--"}</td><td>{getTimeTaken(participant.startedAt, participant.completedAt)}</td><td>{formatDate(participant.startedAt)}</td></tr>)}{!participants.length && <tr><td colSpan="7" className="empty-state">{loading ? "Loading participants..." : "No participants registered yet."}</td></tr>}</tbody></table></div>
 					</section>
 				</>
-			) : <section className="placeholder-panel"><p className="admin-kicker">QUESTIONS</p><h2>Question management</h2><p>Question management can be added here when the quiz editor is ready.</p></section>}
+			) : (
+				<section className="questions-panel">
+					<div className="panel-heading">
+						<div>
+							<p className="admin-kicker">QUESTIONS</p>
+							<h2>Quiz questions</h2>
+						</div>
+						<span>{QUIZ_QUESTIONS.length} questions</span>
+					</div>
+
+					<div className="questions-list">
+						{QUIZ_QUESTIONS.map((item) => (
+							<article key={item.id} className="question-item">
+								<div className="question-header">
+									<span className="question-number-badge">Q{item.id}</span>
+									<strong>{item.question}</strong>
+								</div>
+
+								<ul className="question-options">
+									{item.options.map((option) => (
+										<li
+											key={option}
+											className={
+												option === item.answer ? "correct-option" : ""
+											}
+										>
+											{option}
+										</li>
+									))}
+								</ul>
+							</article>
+						))}
+					</div>
+				</section>
+			)}
 		</main>
 	);
 }

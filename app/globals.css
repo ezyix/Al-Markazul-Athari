@@ -1691,3 +1691,40 @@
   }
 
 }
+
+.donation-upi-row1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 26px 22px 20px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid #dfeaf7;
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(57, 127, 207, 0.08);
+    margin-top: 12px;
+    max-width: 520px;
+    width: min(100%, 520px);
+    margin-inline: auto;
+}
+
+.textt {
+  margin: 0;
+  color: #2568aa;
+  line-height: 1.7;
+  text-align: center;
+  direction: rtl;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.texttp {
+  color: #3f536b;
+  line-height: 1.7;
+  margin: 0;
+  text-align: center;
+  font-size: 15px;
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+}
