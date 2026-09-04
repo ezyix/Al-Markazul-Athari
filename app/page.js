@@ -21,15 +21,39 @@ export default function LoadingPage() {
   const [error, setError] = useState("");
   const [quizStarted, setQuizStarted] = useState(false);
 
+  const refreshQuizStatus = async () => {
+    try {
+      const response = await fetch("/api/quiz-status", {
+        cache: "no-store",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to load quiz status.");
+      }
+
+      setQuizStarted(Boolean(data.isStarted));
+    } catch (loadError) {
+      console.error("Quiz status load failed:", loadError);
+    }
+  };
+
   // Loading screen
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const started = localStorage.getItem("al-markazul-quiz-status") === "true";
-      setQuizStarted(started);
+    const timer = setTimeout(async () => {
+      await refreshQuizStatus();
       setLoading(false);
     }, 5000);
 
-    return () => clearTimeout(timer);
+    const poller = setInterval(() => {
+      refreshQuizStatus();
+    }, 10000);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(poller);
+    };
   }, []);
 
   // Handle input changes

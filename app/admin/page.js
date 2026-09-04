@@ -107,15 +107,36 @@ export default function AdminPage() {
 	const [quizStarted, setQuizStarted] = useState(false);
 
 	useEffect(() => {
-		const session = getAdminSession();
+		 if (typeof window === "undefined") {
+			 return;
+		 }
+
+		 const session = getAdminSession();
 
 		if (!session) {
 			router.replace("/admin/login");
 			return;
 		}
 
-		const started = localStorage.getItem(QUIZ_STATUS_KEY) === "true";
-		setQuizStarted(started);
+		 const syncQuizStatus = async () => {
+			 try {
+				 const response = await fetch("/api/quiz-status", {
+					 cache: "no-store",
+				 });
+
+				 const data = await response.json();
+
+				 if (!response.ok) {
+					 throw new Error(data.message || "Failed to load quiz state.");
+				 }
+
+				 setQuizStarted(Boolean(data.isStarted));
+			 } catch (requestError) {
+				 console.error("Unable to sync quiz status:", requestError);
+			 }
+		 };
+
+		 syncQuizStatus();
 		setAuthenticated(true);
 	}, [router]);
 
@@ -160,10 +181,28 @@ export default function AdminPage() {
 		return () => clearInterval(refreshInterval);
 	}, [authenticated, quizStarted]);
 
-	const handleStartQuiz = () => {
-		const nextValue = !quizStarted;
-		localStorage.setItem(QUIZ_STATUS_KEY, String(nextValue));
-		setQuizStarted(nextValue);
+	 const handleStartQuiz = async () => {
+		 const nextValue = !quizStarted;
+
+		 try {
+			 const response = await fetch("/api/quiz-status", {
+				 method: "PATCH",
+				 headers: {
+					 "Content-Type": "application/json",
+				 },
+				 body: JSON.stringify({ isStarted: nextValue }),
+			 });
+
+			 const data = await response.json();
+
+			 if (!response.ok) {
+				 throw new Error(data.message || "Failed to update quiz status.");
+			 }
+
+			 setQuizStarted(Boolean(data.isStarted));
+		 } catch (requestError) {
+			 setError(requestError.message || "Unable to change quiz status.");
+		 }
 	};
 
 	const handleSignOut = () => {
@@ -244,8 +283,23 @@ export default function AdminPage() {
 						{quizStarted ? "Started" : "Start"}
 					</button>
 					<button className="end-quiz-button" type="button" onClick={() => {
-						localStorage.setItem(QUIZ_STATUS_KEY, "false");
-						setQuizStarted(false);
+						fetch("/api/quiz-status", {
+							method: "PATCH",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({ isStarted: false }),
+						})
+							.then(async (response) => {
+								const data = await response.json();
+								if (!response.ok) {
+									throw new Error(data.message || "Failed to end quiz.");
+								}
+								setQuizStarted(false);
+							})
+							.catch((requestError) => {
+								setError(requestError.message || "Unable to end the quiz.");
+							});
 					}}>
 						End quiz
 					</button>
