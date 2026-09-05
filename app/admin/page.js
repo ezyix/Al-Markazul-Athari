@@ -191,11 +191,17 @@ export default function AdminPage() {
 	};
 
 	useEffect(() => {
-		if (!authenticated || !quizStarted) {
+		if (!authenticated) {
 			return;
 		}
 
 		loadParticipants({ silent: true });
+	}, [authenticated]);
+
+	useEffect(() => {
+		if (!authenticated || !quizStarted) {
+			return;
+		}
 
 		const refreshInterval = setInterval(() => {
 			loadParticipants({ silent: true });
