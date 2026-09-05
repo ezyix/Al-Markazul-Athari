@@ -35,14 +35,9 @@ export default function AdminLoginPage() {
 
   return (
     <main className="admin-login-page">
-      <div className="admin-mark">
-        <img
-          src="/brand name.png"
-          alt="AL MARKAZUL ATHARI"
-          width="120"
-          height="40"
-        />
-      </div>
+                <div className="hheader">
+        <Image src="/logo.png" alt="logo" width="43" height="50" style={{ marginRight: "5px" }} /><Image src="/brand name.png" alt="Al Markazul Athari" width="130" height="40" />
+                </div>
       <div className="admin-login-card">
         <h1>Admin sign in</h1>
         <p className="admin-login-copy">Access the live quiz dashboard.</p>

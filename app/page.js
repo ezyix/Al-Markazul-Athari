@@ -168,10 +168,9 @@ export default function LoadingPage() {
   if (!quizStarted) {
     return (
       <main className="quiz-page welcome-page not-started-page">
-        <div>
-          <Image src="/logo.png" alt="logo" width="38" height="40" />
-          <Image src="/brand name.png" alt="Al Markazul Athari" width="80" height="25" />
-        </div>
+                <div>
+        <Image src="/logo.png" alt="logo" width="43" height="50" style={{ marginRight: "5px" }} /><Image src="/brand name.png" alt="Al Markazul Athari" width="130" height="40" />
+                </div>
 
         <section className="question-card welcome-card not-started-card" aria-labelledby="quiz-status-title">
           <div className="donation-upi-row1">
@@ -197,14 +196,9 @@ export default function LoadingPage() {
 
   return (
     <main className="quiz-page welcome-page">
-      <Image
-        src="/brand name.png"
-        alt="Al Markazul Athari"
-        width={180}
-        height={180}
-        priority
-        className="logo"
-      />     
+                <div>
+        <Image src="/logo.png" alt="logo" width="43" height="50" style={{ marginRight: "5px" }} /><Image src="/brand name.png" alt="Al Markazul Athari" width="130" height="40" />
+                </div>   
 
 
       <section

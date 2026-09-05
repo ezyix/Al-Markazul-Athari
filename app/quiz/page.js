@@ -567,9 +567,9 @@ function QuizPageContent() {
       <header className="quiz-header">
 
         <div className="quiz-brand">
-        <div>
-                <Image src="/logo.png" alt="logo" width="38" height="40" /><Image src="/brand name.png" alt="Al Markazul Athari" width="80" height="25" />
-        </div>
+                <div>
+        <Image src="/logo.png" alt="logo" width="43" height="50" style={{ marginRight: "5px" }} /><Image src="/brand name.png" alt="Al Markazul Athari" width="130" height="40" />
+                </div>
 
           {participant && (
             <p>
